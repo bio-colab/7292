@@ -1,90 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Channel Playlist</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f0f0f0;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .channel {
-            width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            overflow: hidden;
-            background-color: #fff;
-        }
-        .channel h3 {
-            margin: 0;
-            padding: 10px;
-            background-color: #0073e6;
-            color: #fff;
-            text-align: center;
-        }
-        .channel video {
-            width: 100%;
-            height: 200px;
-            background-color: #000;
-        }
-    </style>
+<title>M3U Player</title>
+<style>
+body {
+  font-family: sans-serif;
+}
+#playlist {
+  width: 400px;
+  margin: 20px auto;
+  border: 1px solid #ccc;
+}
+#playlist ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#playlist li {
+  padding: 10px;
+  cursor: pointer;
+}
+#playlist li:hover {
+  background-color: #eee;
+}
+#player {
+  width: 600px;
+  margin: 20px auto;
+}
+</style>
 </head>
 <body>
 
-    <h1>Channel Playlist</h1>
-    <div class="container">
-        <!-- Channel Video Players will be inserted here -->
-    </div>
+<h1>M3U Player</h1>
 
-    <script>
-        const channels = [
-            { name: "beIN SPORTS 1ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/4" },
-            { name: "⚽ beIN SPORTS 2ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/5" },
-            { name: "⚽ beIN SPORTS 3ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/6" },
-            { name: "⚽ beIN SPORTS 4ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/7" },
-            { name: "⚽ beIN SPORTS 5ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/8" },
-            { name: "⚽ beIN SPORTS 6ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/9" },
-            { name: "⚽ beIN SPORTS 7ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/10" },
-            { name: "⚽ beIN SPORTS 8ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/11" },
-            { name: "⚽ beIN SPORTS 9ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/12" },
-            { name: "⚽ beIN Newsᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/2" },
-            { name: "⚽ beIN Sportsᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/3" },
-            { name: "⚽ beIN XTRA 1ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/13" },
-            { name: "⚽ beIN XTRA 2ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/14" },
-            { name: "⚽ beIN XTRA 3ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/15" },
-            { name: "⚽ beIN NBAᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/16" },
-            { name: "⚽ beIN AFC ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/17" },
-            { name: "⚽ beIN AFC 1 ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/18" },
-            { name: "⚽ beIN AFC 2 ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/19" },
-            { name: "⚽ beIN AFC 3ᴴᴰ", url: "http://mo3ad.xyz:25461/mo3ad599Fs6/mo3ad599Fs6/20" }
-        ];
+<div id="playlist">
+  <ul></ul>
+</div>
 
-        const container = document.querySelector('.container');
+<audio id="player" controls></audio>
 
-        channels.forEach(channel => {
-            const channelDiv = document.createElement('div');
-            channelDiv.className = 'channel';
+<script>
+const playlistUl = document.querySelector('#playlist ul');
+const player = document.getElementById('player');
 
-            const title = document.createElement('h3');
-            title.textContent = channel.name;
+// Fetch the m3u file (replace 'playlist.m3u' with your file name)
+fetch('playlist.m3u')
+  .then(response => response.text())
+  .then(data => {
+    // Parse the m3u data
+    const lines = data.split('\n');
+    let currentUrl = '';
 
-            const video = document.createElement('video');
-            video.controls = true;
-            video.src = channel.url;
-
-            channelDiv.appendChild(title);
-            channelDiv.appendChild(video);
-
-            container.appendChild(channelDiv);
+    lines.forEach(line => {
+      if (line.startsWith('#EXTINF:')) {
+        // Extract track information (optional)
+        const trackInfo = line.substring(8).split(',');
+        const trackTitle = trackInfo[1]; 
+      } else if (line.trim() !== '' && !line.startsWith('#')) {
+        currentUrl = line;
+        // Create a list item for each track
+        const li = document.createElement('li');
+        li.textContent = currentUrl; // You can use trackTitle if you extracted it
+        li.addEventListener('click', () => {
+          player.src = currentUrl;
+          player.play();
         });
-    </script>
+        playlistUl.appendChild(li);
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
