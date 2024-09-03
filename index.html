@@ -1,75 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>M3U Player</title>
-<style>
-body {
-  font-family: sans-serif;
-}
-#playlist {
-  width: 400px;
-  margin: 20px auto;
-  border: 1px solid #ccc;
-}
-#playlist ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-#playlist li {
-  padding: 10px;
-  cursor: pointer;
-}
-#playlist li:hover {
-  background-color: #eee;
-}
-#player {
-  width: 600px;
-  margin: 20px auto;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPTV Player</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .channel-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h1 class="mt-4">IPTV Player</h1>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">Channel List</div>
+                    <div class="card-body channel-list">
+                        </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Video Player</div>
+                    <div class="card-body video-container">
+                        <video id="videoPlayer" class="w-100" controls>
+                            Your browser does not support the video tag.
+                        </video>
+                        <p id="selectChannelMessage" class="text-center">Select a channel to start playing</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const channelButtonsContainer = document.querySelector('.channel-list');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const selectChannelMessage = document.getElementById('selectChannelMessage');
 
-<h1>M3U Player</h1>
+        fetch('playlist.m3u')
+            .then(response => response.text())
+            .then(data => {
+                const lines = data.split('\n');
+                const channels = [];
+                for (let i = 1; i < lines.length; i += 2) {
+                    if (lines[i].startsWith('#EXTINF')) {
+                        const name = lines[i].split(',')[1];
+                        const url = lines[i + 1].trim();
+                        channels.push({ name, url });
+                    }
+                }
 
-<div id="playlist">
-  <ul></ul>
-</div>
-
-<audio id="player" controls></audio>
-
-<script>
-const playlistUl = document.querySelector('#playlist ul');
-const player = document.getElementById('player');
-
-// Fetch the m3u file (replace 'playlist.m3u' with your file name)
-fetch('playlist.m3u')
-  .then(response => response.text())
-  .then(data => {
-    // Parse the m3u data
-    const lines = data.split('\n');
-    let currentUrl = '';
-    let currentTitle = ''; 
-
-    lines.forEach(line => {
-      if (line.startsWith('#EXTINF:')) {
-        // Extract track information
-        currentTitle = line.substring(8).split(',')[1]; 
-      } else if (line.trim() !== '' && !line.startsWith('#')) {
-        currentUrl = line;
-        // Create a list item for each track
-        const li = document.createElement('li');
-        li.textContent = currentTitle; 
-        li.addEventListener('click', () => {
-          player.src = currentUrl;
-          player.play();
-        });
-        playlistUl.appendChild(li);
-      }
-    });
-  });
-</script>
-
+                channels.forEach(channel => {
+                    const button = document.createElement('button');
+                    button.classList.add('btn', 'btn-block', 'btn-light'); // Bootstrap button classes
+                    button.textContent = channel.name;
+                    button.addEventListener('click', () => {
+                        videoPlayer.src = channel.url;
+                        videoPlayer.play();
+                        selectChannelMessage.style.display = 'none';
+                    });
+                    channelButtonsContainer.appendChild(button);
+                });
+            });
+    </script>
 </body>
 </html>
