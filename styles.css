@@ -1,4 +1,3 @@
-/* styles.css */
 
 /* --- CSS Variables for Consistency --- */
 :root {
@@ -17,6 +16,7 @@
     --feedback-incorrect-bg: #fee2e2;
     --feedback-incorrect-text: #991b1b;
     --solution-bg: #f1f5f9;
+    --omega-color: #be185d; /* Pink for omega */
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
 }
@@ -24,7 +24,7 @@
 body.dark-mode {
     --bg-color: #111827;
     --text-color: #d1d5db;
-    --primary-color: #3b82f6;
+    --primary-color: #3b82f6; /* Lighter blue for dark mode */
     --secondary-color: #1f2a44;
     --border-color: #374151;
     --header-bg: #1f2a44;
@@ -36,6 +36,7 @@ body.dark-mode {
     --feedback-incorrect-bg: #7f1d1d;
     --feedback-incorrect-text: #f87171;
     --solution-bg: #374151;
+    --omega-color: #f9a8d4; /* Lighter pink for dark mode */
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
@@ -114,6 +115,12 @@ main h2 {
     margin: 2rem 0 1rem;
 }
 
+main h3 {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    margin: 1.5rem 0 0.8rem;
+}
+
 .concept {
     background-color: var(--secondary-color);
     padding: 1.5rem;
@@ -124,8 +131,14 @@ main h2 {
     transition: var(--transition);
 }
 
-.concept p {
+.concept p, .concept li {
     margin-bottom: 0.8rem;
+}
+.concept ul {
+    padding-right: 2rem; /* Indentation for lists */
+}
+.concept strong {
+    color: var(--primary-color);
 }
 
 /* --- Exercises --- */
@@ -147,13 +160,15 @@ main h2 {
 .exercise label {
     margin-left: 0.5rem;
     font-size: 1rem;
+    display: inline-block;
+    margin-bottom: 0.3rem;
 }
 
-.exercise input[type="text"] {
+.exercise input[type="text"], .exercise select {
     padding: 0.6rem;
-    margin: 0.5rem 0;
+    margin: 0.3rem 0 0.8rem; /* Adjusted margin */
     width: 100%;
-    max-width: 200px;
+    max-width: 250px; /* Slightly wider max-width */
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background-color: var(--bg-color);
@@ -162,17 +177,27 @@ main h2 {
     text-align: left;
     font-size: 1rem;
     transition: var(--transition);
+    display: inline-block; /* Align with label better */
+    vertical-align: middle;
+}
+.exercise input[type="text"] {
+     margin-left: 1rem; /* Add space between inputs */
 }
 
-.exercise input[type="text"]:focus {
+
+.exercise input[type="text"]:focus, .exercise select:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.2);
 }
+body.dark-mode .exercise input[type="text"]:focus,
+body.dark-mode .exercise select:focus {
+     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
 
 .exercise button {
     padding: 0.6rem 1.2rem;
-    margin: 0.5rem;
+    margin: 0.5rem 0.2rem; /* Adjust margin for inline buttons */
     background-color: var(--button-bg);
     color: var(--button-text);
     border: none;
@@ -180,6 +205,7 @@ main h2 {
     cursor: pointer;
     font-size: 1rem;
     transition: var(--transition);
+    vertical-align: middle;
 }
 
 .exercise button:hover {
@@ -191,6 +217,10 @@ main h2 {
     outline: none;
     box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.2);
 }
+body.dark-mode .exercise button:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
 
 .feedback {
     margin-top: 1rem;
@@ -200,7 +230,7 @@ main h2 {
     opacity: 0;
     transform: translateY(10px);
     transition: opacity 0.3s ease, transform 0.3s ease;
-    display: none;
+    display: none; /* Hide initially */
 }
 
 .feedback.correct {
@@ -216,7 +246,7 @@ main h2 {
 }
 
 .feedback.show {
-    display: block;
+    display: block; /* Show when class is added */
     opacity: 1;
     transform: translateY(0);
 }
@@ -246,24 +276,67 @@ pre {
     text-align: left;
     font-size: 0.95rem;
     margin: 1rem 0;
+    border: 1px solid var(--border-color);
 }
 
 code {
     font-family: 'Fira Code', Consolas, Monaco, monospace;
+    color: var(--primary-color); /* Make inline code stand out */
+}
+pre code {
+     color: inherit; /* Reset color for code inside pre */
 }
 
 body.dark-mode pre {
-    color: #d1d5db;
+    color: #e5e7eb; /* Lighter code text in dark mode */
+}
+body.dark-mode code {
+    color: var(--primary-color);
 }
 
-/* --- Argand Diagram --- */
-#argandDiagramContainer {
-    margin: 2rem auto;
+
+/* --- p5.js Visualizations --- */
+.visualization-container {
+    background-color: var(--secondary-color);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    text-align: center; /* Center align content */
+}
+.visualization-container h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    text-align: right; /* Keep heading right-aligned */
+}
+.visualization-container .controls {
+    margin-bottom: 1rem;
+    text-align: right; /* Align controls to the right */
+}
+.visualization-container .controls label {
+    margin-left: 0.5rem;
+}
+.visualization-container .controls input[type="text"],
+.visualization-container .controls select,
+.visualization-container .controls button {
+    max-width: 180px; /* Smaller inputs for controls */
+    margin: 0.5rem 0.5rem 0.5rem 0;
+}
+
+
+#argandDiagramContainer,
+#vectorAdditionContainer,
+#rootsOfUnityContainer {
+    margin: 1rem auto; /* Center the canvas */
     width: 100%;
     max-width: 400px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    overflow: hidden;
+    overflow: hidden; /* Clip canvas if needed */
+    background-color: var(--bg-color); /* Ensure canvas bg contrasts */
+    transition: var(--transition);
 }
 
 /* --- Footer --- */
@@ -289,7 +362,17 @@ footer a:hover {
 mjx-container {
     overflow-x: auto;
     margin: 0.5rem 0;
+    display: block; /* Ensure MathJax takes block space */
+    padding: 0.2rem 0; /* Add slight padding */
 }
+
+/* --- Omega Symbol Styling --- */
+.omega {
+    color: var(--omega-color);
+    font-weight: bold;
+    font-style: italic;
+}
+
 
 /* --- Responsive Design --- */
 @media (max-width: 768px) {
@@ -310,17 +393,28 @@ mjx-container {
     main h2 {
         font-size: 1.5rem;
     }
+     main h3 {
+        font-size: 1.3rem;
+    }
 
-    .exercise input[type="text"] {
-        max-width: 100%;
+    .exercise input[type="text"], .exercise select {
+        max-width: 200px; /* Adjust max-width on smaller screens */
     }
 
     .exercise button {
-        width: 100%;
-        margin: 0.5rem 0;
+         padding: 0.5rem 1rem;
+         font-size: 0.9rem;
     }
 
-    #argandDiagramContainer {
+    .visualization-container .controls input[type="text"],
+    .visualization-container .controls select,
+    .visualization-container .controls button {
+        max-width: 150px;
+    }
+
+    #argandDiagramContainer,
+    #vectorAdditionContainer,
+    #rootsOfUnityContainer {
         max-width: 100%;
     }
 }
@@ -329,19 +423,32 @@ mjx-container {
     header {
         flex-direction: column;
         gap: 1rem;
+        padding: 1rem;
     }
 
     header h1 {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
     }
 
     .exercise label {
-        display: block;
-        margin-bottom: 0.5rem;
+        display: block; /* Stack labels above inputs */
+        margin-bottom: 0.2rem;
+        margin-left: 0;
+    }
+    .exercise input[type="text"], .exercise select {
+        max-width: 100%; /* Full width on very small screens */
+        margin-left: 0;
+        display: block; /* Ensure block display */
+    }
+    .exercise button {
+        width: auto; /* Allow buttons to size naturally */
+        margin: 0.5rem 0.2rem 0.5rem 0; /* Adjust margin */
+        display: inline-block;
     }
 
     .concept,
-    .exercise {
+    .exercise,
+    .visualization-container {
         padding: 1rem;
     }
 
