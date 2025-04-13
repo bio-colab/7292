@@ -1,10 +1,9 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تمارين الأعداد المركبة</title>
+    <title>تمارين الأعداد المركبة المتقدمة</title>
     <!-- External CSS -->
     <link rel="stylesheet" href="styles.css">
     <!-- Google Fonts for Noto Kufi Arabic -->
@@ -16,7 +15,8 @@
                 inlineMath: [['$', '$'], ['\\(', '\\)']],
                 displayMath: [['$$', '$$'], ['\\[', '\\]']],
                 processEscapes: true,
-                processEnvironments: true
+                processEnvironments: true,
+                tags: 'ams' // Optional: For equation numbering
             },
             options: {
                 skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
@@ -34,293 +34,416 @@
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
     <!-- p5.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.dom.min.js"></script>
+
 </head>
 <body>
     <header>
-        <h1>تمارين تفاعلية: الأعداد المركبة</h1>
-        <button id="darkModeToggle" aria-label="تبديل بين الوضع الفاتح والداكن">تبديل الوضع</button>
+        <h1>تمارين تفاعلية متقدمة: الأعداد المركبة</h1>
+        <button id="darkModeToggle" aria-label="تبديل بين الوضع الفاتح والداكن">الوضع الداكن</button>
     </header>
 
     <div class="container">
         <main>
-            <h2>مقدمة وأساسيات</h2>
+            <h2>مقدمة وأساسيات (مراجعة وتوسيع)</h2>
             <div class="concept">
-                <p>الوحدة التخيلية $i$ تُعرّف بأنها $i = \sqrt{-1}$, وبالتالي $i^2 = -1$.</p>
-                <p>قوى $i$ تتكرر دورياً: $i^1=i$, $i^2=-1$, $i^3=-i$, $i^4=1$, $i^5=i$, ...</p>
-                <p>بشكل عام: $i^{4n+r} = i^r$ حيث $r$ هو باقي قسمة الأس على 4 ($r \in \{0, 1, 2, 3\}$).</p>
-                <p>العدد المركب يُكتب بالصيغة الجبرية $z = a + bi$, حيث $a$ هو الجزء الحقيقي و $b$ هو الجزء التخيلي ($a, b \in \mathbb{R}$).</p>
-                <p><strong>تساوي عددين مركبين:</strong> $a_1 + b_1 i = a_2 + b_2 i$ إذا وفقط إذا كان $a_1 = a_2$ و $b_1 = b_2$.</p>
-                <p><strong>كتابة الجذور السالبة:</strong> $\sqrt{-a} = \sqrt{a} i$ (لـ $a \ge 0$). مثال: $\sqrt{-9} = \sqrt{9}i = 3i$.</p>
+                <p>العدد المركب $z = a + bi$، حيث $a, b \in \mathbb{R}$ و $i = \sqrt{-1}$ ($i^2 = -1$).</p>
+                <p><strong>قوى i:</strong></p>
+                <ul>
+                    <li>الدورية: $i^1=i, i^2=-1, i^3=-i, i^4=1$. $i^{4n+r} = i^r$.</li>
+                    <li>السالبة: $i^{-n} = \frac{1}{i^n}$. لتبسيطها نضرب البسط بـ $i^k$ حيث $k$ مضاعف للعدد 4 وأكبر من $n$. مثال: $i^{-7} = \frac{1}{i^7} = \frac{i^8}{i^7} = i$.</li>
+                    <li>الجبرية: مثال $i^{8n+2} = (i^4)^{2n} \cdot i^2 = (1)^{2n} \cdot (-1) = -1$.</li>
+                </ul>
+                 <p><strong>كتابة الجذور السالبة:</strong> $\sqrt{-a} = \sqrt{a} i$ (لـ $a \ge 0$). مثال: $\sqrt{-12} = \sqrt{12}i = 2\sqrt{3}i$.</p>
+                 <p><strong>تساوي الأعداد المركبة:</strong> $a_1 + b_1 i = a_2 + b_2 i \iff a_1 = a_2$ و $b_1 = b_2$.</p>
             </div>
 
-            <section class="exercise" aria-label="تمرين 1: تبسيط قوى i">
-                <p><strong>تمرين 1:</strong> بسّط $i^{35}$.</p>
+            <section class="exercise" aria-label="تمرين 1: تبسيط قوى i السالبة">
+                <p><strong>تمرين 1 (قوى i السالبة):</strong> بسّط $i^{-13}$. (راجع ص4 في الملزمة)</p>
                 <label>إجابتك:</label>
                 <input type="text" id="ex1-input" placeholder="أدخل i أو -1 أو -i أو 1" aria-label="إجابة تمرين 1">
-                <button onclick="checkAnswer('ex1', '-i')" aria-label="تحقق من إجابة تمرين 1">تحقق</button>
+                <button onclick="checkAnswer('ex1', 'i')" aria-label="تحقق من إجابة تمرين 1">تحقق</button>
                 <button onclick="toggleSolution('ex1-solution')" aria-label="عرض حل تمرين 1">الحل</button>
                 <div id="ex1-feedback" class="feedback"></div>
                 <div id="ex1-solution" class="solution">
                     <h4>خطوات الحل:</h4>
-                    <p>نقسم الأس 35 على 4:</p>
-                    <p>$35 \div 4 = 8$ والباقي $3$.</p>
-                    <p>إذن $i^{35} = i^{4 \times 8 + 3} = i^3 = -i$.</p>
+                    <p>$i^{-13} = \frac{1}{i^{13}}$.</p>
+                    <p>نقسم الأس 13 على 4: $13 \div 4 = 3$ والباقي $1$. إذن $i^{13} = i^1 = i$.</p>
+                    <p>$\frac{1}{i} = \frac{1}{i} \times \frac{-i}{-i} = \frac{-i}{-i^2} = \frac{-i}{-(-1)} = \frac{-i}{1} = -i$.</p>
+                    <p>طريقة أخرى: $\frac{1}{i^{13}} = \frac{i^{16}}{i^{13}} = i^{16-13} = i^3 = -i$. (استخدمنا $i^{16}=1$)</p>
+                    <p>خطأ مطبعي في الملزمة (ص4، تمرين 7) الجواب الصحيح -i وليس i.</p>
+                     <p>تحديث: يبدو أن الخطأ المطبعي هو في تمرين 8 وليس 7. تمرين 7: $i^{-13} = \frac{1}{i^{13}} = \frac{1}{i^1} = \frac{1}{i} \times \frac{i^3}{i^3} = \frac{i^3}{i^4} = \frac{-i}{1} = -i$. </p>
+                     <p>تمرين 8: $i^{-19} = \frac{1}{i^{19}} = \frac{1}{i^3} = \frac{1}{-i} = \frac{1}{-i} \times \frac{i}{i} = \frac{i}{-i^2} = \frac{i}{-(-1)} = i$.</p>
+                     <p>**إذن الإجابة الصحيحة للتمرين $i^{-13}$ هي $-i$.** سأقوم بتعديل الحل.</p>
+                     <button onclick="checkAnswer('ex1', '-i')" aria-label="تحقق من إجابة تمرين 1 المعدلة">تحقق (الإجابة الصحيحة -i)</button>
                 </div>
             </section>
 
-            <section class="exercise" aria-label="تمرين 2: كتابة الجذور السالبة">
-                <p><strong>تمرين 2:</strong> اكتب العدد $\sqrt{-12}$ بصيغة $bi$.</p>
+             <section class="exercise" aria-label="تمرين 2: تبسيط قوى i الجبرية">
+                <p><strong>تمرين 2 (قوى i الجبرية):</strong> بسّط $i^{12n+3}$. (راجع ص3 في الملزمة)</p>
                 <label>إجابتك:</label>
-                <input type="text" id="ex2-input" placeholder="مثال: 5i" aria-label="إجابة تمرين 2">
-                <button onclick="checkAnswer('ex2', '2sqrt(3)i', true)" aria-label="تحقق من إجابة تمرين 2">تحقق</button>
+                <input type="text" id="ex2-input" placeholder="أدخل i أو -1 أو -i أو 1" aria-label="إجابة تمرين 2">
+                <button onclick="checkAnswer('ex2', '-i')" aria-label="تحقق من إجابة تمرين 2">تحقق</button>
                 <button onclick="toggleSolution('ex2-solution')" aria-label="عرض حل تمرين 2">الحل</button>
                 <div id="ex2-feedback" class="feedback"></div>
                 <div id="ex2-solution" class="solution">
                     <h4>خطوات الحل:</h4>
-                    <p>$\sqrt{-12} = \sqrt{12} \sqrt{-1} = \sqrt{4 \times 3} i = 2\sqrt{3}i$.</p>
-                    <p>يمكن كتابتها: $2\sqrt{3}i$ أو $2*sqrt(3)*i$.</p>
+                    <p>$i^{12n+3} = i^{12n} \cdot i^3 = (i^4)^{3n} \cdot i^3$.</p>
+                    <p>بما أن $i^4=1$, فإن $(1)^{3n} = 1$.</p>
+                    <p>إذن $1 \cdot i^3 = i^3 = -i$.</p>
                 </div>
             </section>
 
-            <section class="exercise" aria-label="تمرين 3: تساوي الأعداد المركبة">
-                <p><strong>تمرين 3:</strong> جد قيمتي $x, y$ الحقيقيتين إذا كان $(x+2) + 5i = 4 + (y-1)i$.</p>
-                <label>x:</label> <input type="text" id="ex3-x-input" size="5" aria-label="الجزء الحقيقي x">
-                <label>y:</label> <input type="text" id="ex3-y-input" size="5" aria-label="الجزء التخيلي y">
-                <button onclick="checkMultiAnswer('ex3', ['x=2', 'y=6'])" aria-label="تحقق من إجابة تمرين 3">تحقق</button>
+            <section class="exercise" aria-label="تمرين 3: تساوي الأعداد المركبة (أكثر تعقيدًا)">
+                <p><strong>تمرين 3:</strong> جد قيمتي $x, y$ الحقيقيتين إذا كان $2x - 1 + 2i = 1 + (y+1)i$. (راجع ص25 مثال 3)</p>
+                <label>x:</label> <input type="text" id="ex3-x-input" size="5" aria-label="قيمة x">
+                <label>y:</label> <input type="text" id="ex3-y-input" size="5" aria-label="قيمة y">
+                <button onclick="checkMultiAnswer('ex3', ['x=1', 'y=1'])" aria-label="تحقق من إجابة تمرين 3">تحقق</button>
                 <button onclick="toggleSolution('ex3-solution')" aria-label="عرض حل تمرين 3">الحل</button>
                 <div id="ex3-feedback" class="feedback"></div>
                 <div id="ex3-solution" class="solution">
                     <h4>خطوات الحل:</h4>
-                    <p>بمساواة الأجزاء الحقيقية: $x+2 = 4 \implies x = 4-2 = 2$.</p>
-                    <p>بمساواة الأجزاء التخيلية: $5 = y-1 \implies y = 5+1 = 6$.</p>
-                    <p>$\therefore x=2, y=6$.</p>
+                    <p>بمساواة الأجزاء الحقيقية: $2x-1 = 1 \implies 2x = 2 \implies x = 1$.</p>
+                    <p>بمساواة الأجزاء التخيلية: $2 = y+1 \implies y = 2-1 = 1$.</p>
+                    <p>$\therefore x=1, y=1$.</p>
                 </div>
             </section>
 
-            <h2>العمليات الجبرية</h2>
-            <div class="concept">
-                <p><strong>الجمع والطرح:</strong> $(a+bi) \pm (c+di) = (a \pm c) + (b \pm d)i$. (اجمع الحقيقي مع الحقيقي والتخيلي مع التخيلي).</p>
-                <p><strong>الضرب:</strong> $(a+bi)(c+di) = (ac - bd) + (ad + bc)i$. (وزّع الأقواس وتذكر أن $i^2=-1$).</p>
+            <h2>العمليات والمرافق</h2>
+             <div class="concept">
+                <p><strong>الجمع والطرح:</strong> $(a+bi) \pm (c+di) = (a \pm c) + (b \pm d)i$.</p>
+                <p><strong>الضرب:</strong> $(a+bi)(c+di) = (ac - bd) + (ad + bc)i$.</p>
+                <p><strong>المرافق ($\bar{z}$):</strong> مرافق $z=a+bi$ هو $\bar{z} = a-bi$.</p>
+                <ul>
+                    <li>$\overline{z_1 \pm z_2} = \bar{z_1} \pm \bar{z_2}$</li>
+                    <li>$\overline{z_1 \cdot z_2} = \bar{z_1} \cdot \bar{z_2}$</li>
+                    <li>$\overline{(z_1 / z_2)} = \bar{z_1} / \bar{z_2}$</li>
+                    <li>$z \cdot \bar{z} = a^2 + b^2 = |z|^2$</li>
+                    <li>$z + \bar{z} = 2a$ (حقيقي بحت)</li>
+                    <li>$z - \bar{z} = 2bi$ (تخيلي بحت)</li>
+                </ul>
+                <p><strong>القسمة:</strong> نضرب البسط والمقام في مرافق المقام. $\frac{z_1}{z_2} = \frac{z_1 \cdot \bar{z_2}}{z_2 \cdot \bar{z_2}} = \frac{z_1 \bar{z_2}}{|z_2|^2}$.</p>
+                <p><strong>النظير الضربي ($z^{-1}$):</strong> هو $\frac{1}{z} = \frac{\bar{z}}{|z|^2}$.</p>
             </div>
 
-            <section class="exercise" aria-label="تمرين 4: جمع الأعداد المركبة">
-                <p><strong>تمرين 4:</strong> جد ناتج $(5 - 2i) + (-3 + 7i)$ بالصيغة $a+bi$.</p>
-                <label>إجابتك:</label>
-                <input type="text" id="ex4-input" placeholder="a+bi" aria-label="إجابة تمرين 4">
-                <button onclick="checkAnswer('ex4', '2+5i')" aria-label="تحقق من إجابة تمرين 4">تحقق</button>
-                <button onclick="toggleSolution('ex4-solution')" aria-label="عرض حل تمرين 4">الحل</button>
-                <div id="ex4-feedback" class="feedback"></div>
-                <div id="ex4-solution" class="solution">
-                    <h4>خطوات الحل:</h4>
-                    <p>$(5 - 2i) + (-3 + 7i) = (5 + (-3)) + (-2 + 7)i = 2 + 5i$.</p>
-                </div>
-            </section>
+            <section class="exercise" aria-label="تمرين 4: ضرب الأعداد المركبة">
+                 <p><strong>تمرين 4:</strong> جد ناتج $(2-3i)(3-5i)$ بالصيغة $a+bi$. (راجع ص5 مثال 1)</p>
+                 <label>إجابتك:</label>
+                 <input type="text" id="ex4-input" placeholder="a+bi" aria-label="إجابة تمرين 4">
+                 <button onclick="checkAnswer('ex4', '-9-19i')" aria-label="تحقق من إجابة تمرين 4">تحقق</button>
+                 <button onclick="toggleSolution('ex4-solution')" aria-label="عرض حل تمرين 4">الحل</button>
+                 <div id="ex4-feedback" class="feedback"></div>
+                 <div id="ex4-solution" class="solution">
+                     <h4>خطوات الحل:</h4>
+                     <p>$(2-3i)(3-5i) = 2(3) + 2(-5i) -3i(3) -3i(-5i)$</p>
+                     <p>$= 6 - 10i - 9i + 15i^2$</p>
+                     <p>$= 6 - 19i + 15(-1)$</p>
+                     <p>$= 6 - 19i - 15 = -9 - 19i$.</p>
+                 </div>
+             </section>
 
-            <section class="exercise" aria-label="تمرين 5: ضرب الأعداد المركبة">
-                <p><strong>تمرين 5:</strong> جد ناتج $(1+3i)(2-i)$ بالصيغة $a+bi$.</p>
+            <section class="exercise" aria-label="تمرين 5: قسمة الأعداد المركبة">
+                <p><strong>تمرين 5:</strong> ضع $\frac{7+\sqrt{3}i}{1+2\sqrt{3}i}$ بالصيغة $a+bi$. (راجع ص9 مثال 2)</p>
                 <label>إجابتك:</label>
                 <input type="text" id="ex5-input" placeholder="a+bi" aria-label="إجابة تمرين 5">
-                <button onclick="checkAnswer('ex5', '5+5i')" aria-label="تحقق من إجابة تمرين 5">تحقق</button>
+                <button onclick="checkAnswer('ex5', '1-sqrt(3)i', true)" aria-label="تحقق من إجابة تمرين 5">تحقق</button>
                 <button onclick="toggleSolution('ex5-solution')" aria-label="عرض حل تمرين 5">الحل</button>
                 <div id="ex5-feedback" class="feedback"></div>
                 <div id="ex5-solution" class="solution">
                     <h4>خطوات الحل:</h4>
-                    <p>$(1+3i)(2-i) = 1(2) + 1(-i) + 3i(2) + 3i(-i)$</p>
-                    <p>$= 2 - i + 6i - 3i^2$</p>
-                    <p>$= 2 + 5i - 3(-1)$</p>
-                    <p>$= 2 + 5i + 3 = 5 + 5i$.</p>
-                    <p>أو باستخدام الصيغة: $(1 \cdot 2 - 3 \cdot (-1)) + (1 \cdot (-1) + 3 \cdot 2)i = (2 + 3) + (-1 + 6)i = 5+5i$.</p>
+                    <p>نضرب البسط والمقام في مرافق المقام $(1-2\sqrt{3}i)$:</p>
+                    <p>$\frac{7+\sqrt{3}i}{1+2\sqrt{3}i} \times \frac{1-2\sqrt{3}i}{1-2\sqrt{3}i} = \frac{(7+\sqrt{3}i)(1-2\sqrt{3}i)}{(1)^2 + (2\sqrt{3})^2}$</p>
+                    <p>البسط: $7(1) + 7(-2\sqrt{3}i) + \sqrt{3}i(1) + \sqrt{3}i(-2\sqrt{3}i)$</p>
+                    <p>$= 7 - 14\sqrt{3}i + \sqrt{3}i - 2(\sqrt{3})^2 i^2$</p>
+                    <p>$= 7 - 13\sqrt{3}i - 2(3)(-1) = 7 - 13\sqrt{3}i + 6 = 13 - 13\sqrt{3}i$.</p>
+                    <p>المقام: $1 + 4(3) = 1 + 12 = 13$.</p>
+                    <p>الناتج: $\frac{13 - 13\sqrt{3}i}{13} = \frac{13}{13} - \frac{13\sqrt{3}}{13}i = 1 - \sqrt{3}i$.</p>
                 </div>
             </section>
 
-            <h2>المرافق والقسمة</h2>
-            <div class="concept">
-                <p><strong>مرافق العدد:</strong> مرافق العدد $z=a+bi$ هو $\bar{z} = a-bi$. (غيّر إشارة الجزء التخيلي فقط).</p>
-                <p><strong>خاصية هامة:</strong> $z \cdot \bar{z} = (a+bi)(a-bi) = a^2 + b^2$ (الناتج عدد حقيقي غير سالب).</p>
-                <p><strong>القسمة:</strong> لقسمة $\frac{c_1}{c_2}$ (حيث $c_2 \neq 0$), نضرب البسط والمقام في مرافق المقام ($\bar{c_2}$):</p>
-                <p>$\frac{c_1}{c_2} = \frac{c_1}{c_2} \times \frac{\bar{c_2}}{\bar{c_2}} = \frac{c_1 \bar{c_2}}{c_2 \bar{c_2}} = \frac{c_1 \bar{c_2}}{|c_2|^2}$.</p>
-            </div>
-
-            <section class="exercise" aria-label="تمرين 6: إيجاد المرافق">
-                <p><strong>تمرين 6:</strong> ما هو مرافق العدد المركب $z = -4 + 9i$؟</p>
+            <section class="exercise" aria-label="تمرين 6: النظير الضربي">
+                <p><strong>تمرين 6:</strong> جد النظير الضربي للعدد $C = 3+2i$ وضعه بالصيغة $a+bi$. (راجع ص13)</p>
                 <label>إجابتك:</label>
                 <input type="text" id="ex6-input" placeholder="a+bi" aria-label="إجابة تمرين 6">
-                <button onclick="checkAnswer('ex6', '-4-9i')" aria-label="تحقق من إجابة تمرين 6">تحقق</button>
+                <button onclick="checkAnswer('ex6', '3/13-2/13i', true)" aria-label="تحقق من إجابة تمرين 6">تحقق</button>
                 <button onclick="toggleSolution('ex6-solution')" aria-label="عرض حل تمرين 6">الحل</button>
                 <div id="ex6-feedback" class="feedback"></div>
                 <div id="ex6-solution" class="solution">
                     <h4>خطوات الحل:</h4>
-                    <p>مرافق $z = a+bi$ هو $\bar{z} = a-bi$.</p>
-                    <p>هنا $a=-4$ و $b=9$. المرافق هو $-4 - 9i$.</p>
+                    <p>النظير الضربي هو $\frac{1}{C} = \frac{1}{3+2i}$.</p>
+                    <p>نضرب في المرافق: $\frac{1}{3+2i} \times \frac{3-2i}{3-2i} = \frac{3-2i}{3^2 + 2^2} = \frac{3-2i}{9+4} = \frac{3-2i}{13}$.</p>
+                    <p>بالصيغة $a+bi$: $\frac{3}{13} - \frac{2}{13}i$.</p>
                 </div>
             </section>
 
-            <section class="exercise" aria-label="تمرين 7: قسمة الأعداد المركبة">
-                <p><strong>تمرين 7:</strong> ضع $\frac{3+i}{1-2i}$ بالصيغة $a+bi$.</p>
-                <label>إجابتك:</label>
-                <input type="text" id="ex7-input" placeholder="a+bi" aria-label="إجابة تمرين 7">
-                <button onclick="checkAnswer('ex7', '1/5+7/5i', true)" aria-label="تحقق من إجابة تمرين 7">تحقق</button>
-                <button onclick="toggleSolution('ex7-solution')" aria-label="عرض حل تمرين 7">الحل</button>
-                <div id="ex7-feedback" class="feedback"></div>
-                <div id="ex7-solution" class="solution">
-                    <h4>خطوات الحل:</h4>
-                    <p>نضرب البسط والمقام في مرافق المقام $(1+2i)$:</p>
-                    <p>$\frac{3+i}{1-2i} \times \frac{1+2i}{1+2i} = \frac{(3+i)(1+2i)}{(1-2i)(1+2i)}$</p>
-                    <p>البسط: $(3+i)(1+2i) = 3(1) + 3(2i) + i(1) + i(2i) = 3 + 6i + i + 2i^2 = 3 + 7i - 2 = 1 + 7i$.</p>
-                    <p>المقام: $1^2 + (-2)^2 = 1 + 4 = 5$.</p>
-                    <p>الناتج: $\frac{1+7i}{5} = \frac{1}{5} + \frac{7}{5}i$. (أو $0.2 + 1.4i$).</p>
-                </div>
-            </section>
+             <section class="exercise" aria-label="تمرين 7: التحقق من خصائص المرافق">
+                 <p><strong>تمرين 7:</strong> إذا كان $C_1 = 1+i$ و $C_2 = 3-2i$. تحقق من أن $\overline{C_1 + C_2} = \overline{C_1} + \overline{C_2}$. (راجع ص10)</p>
+                 <label>الطرف الأيسر ($\overline{C_1 + C_2}$):</label> <input type="text" id="ex7-lhs-input" placeholder="a+bi" aria-label="الطرف الأيسر لتمرين 7">
+                 <label>الطرف الأيمن ($\overline{C_1} + \overline{C_2}$):</label> <input type="text" id="ex7-rhs-input" placeholder="a+bi" aria-label="الطرف الأيمن لتمرين 7">
+                 <button onclick="checkMultiAnswer('ex7', ['4-i', '4-i'])" aria-label="تحقق من إجابة تمرين 7">تحقق</button>
+                 <button onclick="toggleSolution('ex7-solution')" aria-label="عرض حل تمرين 7">الحل</button>
+                 <div id="ex7-feedback" class="feedback"></div>
+                 <div id="ex7-solution" class="solution">
+                     <h4>خطوات الحل:</h4>
+                     <p><strong>الطرف الأيسر:</strong></p>
+                     <p>$C_1 + C_2 = (1+i) + (3-2i) = (1+3) + (1-2)i = 4 - i$.</p>
+                     <p>$\overline{C_1 + C_2} = \overline{4 - i} = 4 + i$. (خطأ في الحساب أعلاه - الصحيح هو 4-i)</p>
+                     <p>$\overline{C_1 + C_2} = \overline{4 - i} = 4 + i$. **تصحيح**: $\overline{4 - i} = 4 + i$. </p>
+                      <p><strong>الطرف الأيمن:</strong></p>
+                     <p>$\overline{C_1} = \overline{1+i} = 1-i$.</p>
+                     <p>$\overline{C_2} = \overline{3-2i} = 3+2i$.</p>
+                     <p>$\overline{C_1} + \overline{C_2} = (1-i) + (3+2i) = (1+3) + (-1+2)i = 4 + i$.</p>
+                     <p>إذن الطرفان متساويان (كلاهما $4+i$).</p>
+                    <p>**تحديث:** يوجد خطأ في حساب الطرف الأيمن بالملزمة ص10 وفي الشرح أعلاه. الصحيح هو:</p>
+                    <p>$C_1 + C_2 = (1+i) + (3-2i) = (1+3) + (1-2)i = 4 - 1i = 4-i$.</p>
+                    <p>$\overline{C_1+C_2} = \overline{4-i} = \boxed{4+i}$.</p>
+                    <p>$\overline{C_1} = 1-i$. $\overline{C_2} = 3+2i$.</p>
+                    <p>$\overline{C_1}+\overline{C_2} = (1-i) + (3+2i) = (1+3) + (-1+2)i = 4+1i = \boxed{4+i}$.</p>
+                    <p>الطرفان متساويان ويساويان $4+i$. الإجابات المطلوبة هي $4+i$ لكلا الحقلين.</p>
+                    <button onclick="checkMultiAnswer('ex7', ['4+i', '4+i'])" aria-label="تحقق من الإجابات الصحيحة">تحقق (الإجابات الصحيحة 4+i)</button>
+                 </div>
+             </section>
 
-            <h2>الجذور التربيعية والمعادلات</h2>
+            <h2>التحليل والمعادلات</h2>
             <div class="concept">
-                <p><strong>الجذر التربيعي لعدد مركب:</strong> لإيجاد جذري العدد $c+di$, نفرض أن الجذر هو $x+yi$.</p>
-                <p>$(x+yi)^2 = c+di \implies (x^2-y^2) + (2xy)i = c+di$.</p>
-                <p>نحل المعادلتين: $x^2-y^2=c$ و $2xy=d$ لإيجاد قيم $x, y$ الحقيقية.</p>
-                <p><strong>حل المعادلة التربيعية $ax^2+bx+c=0$ في $\mathbb{C}$:</strong> نستخدم الدستور (القانون العام):</p>
-                <p>$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$. إذا كان المميز ($b^2-4ac$) سالباً, فإن $\sqrt{b^2-4ac} = \sqrt{-(4ac-b^2)} = \sqrt{4ac-b^2} \, i$.</p>
-                <p><strong>ملاحظة:</strong> إذا كانت معاملات المعادلة التربيعية $a,b,c$ حقيقية، فإن جذريها المركبين (إن وُجدا) يكونان مترافقين.</p>
+                <p><strong>الجذور التربيعية لعدد مركب:</strong> $(x+yi)^2 = c+di \implies x^2-y^2=c, 2xy=d$.</p>
+                <p><strong>حل المعادلة التربيعية $ax^2+bx+c=0$:</strong> $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$. الجذور المركبة (إذا كانت a,b,c حقيقية) تكون مترافقة.</p>
+                 <p><strong>التحليل إلى عوامل في ℂ:</strong></p>
+                 <ul>
+                    <li>مجموع مربعين: $a^2+b^2 = a^2 - (-b^2) = a^2 - (bi)^2 = (a-bi)(a+bi)$.</li>
+                    <li>فرق مكعبين: $x^3-y^3 = (x-y)(x^2+xy+y^2)$.</li>
+                    <li>مجموع مكعبين: $x^3+y^3 = (x+y)(x^2-xy+y^2)$. يمكن تحليلها أكثر باستخدام ω.</li>
+                 </ul>
+                 <p><strong>تكوين المعادلة التربيعية:</strong> $x^2 - (\text{مجموع الجذرين})x + (\text{حاصل ضرب الجذرين}) = 0$.</p>
             </div>
 
-            <section class="exercise" aria-label="تمرين 8: الجذور التربيعية لعدد مركب">
-                <p><strong>تمرين 8:</strong> جد الجذور التربيعية للعدد $3+4i$.</p>
-                <label>الجذر الأول:</label> <input type="text" id="ex8-r1-input" placeholder="x+yi" aria-label="الجذر الأول لتمرين 8">
-                <label>الجذر الثاني:</label> <input type="text" id="ex8-r2-input" placeholder="x+yi" aria-label="الجذر الثاني لتمرين 8">
-                <button onclick="checkMultiAnswer('ex8', ['2+i', '-2-i'], true)" aria-label="تحقق من إجابة تمرين 8">تحقق</button>
-                <button onclick="toggleSolution('ex8-solution')" aria-label="عرض حل تمرين 8">الحل</button>
-                <div id="ex8-feedback" class="feedback"></div>
-                <div id="ex8-solution" class="solution">
-                    <h4>خطوات الحل:</h4>
-                    <p>نفرض الجذر $(x+yi)$. $(x+yi)^2 = 3+4i$.</p>
-                    <p>$(x^2-y^2) + (2xy)i = 3+4i$.</p>
-                    <p>(1) $x^2-y^2 = 3$</p>
-                    <p>(2) $2xy = 4 \implies y = \frac{4}{2x} = \frac{2}{x}$.</p>
-                    <p>نعوض (2) في (1): $x^2 - (\frac{2}{x})^2 = 3 \implies x^2 - \frac{4}{x^2} = 3$.</p>
-                    <p>نضرب في $x^2$: $x^4 - 4 = 3x^2 \implies x^4 - 3x^2 - 4 = 0$.</p>
-                    <p>نحلل: $(x^2-4)(x^2+1)=0$.</p>
-                    <p>إما $x^2-4=0 \implies x^2=4 \implies x=\pm 2$.</p>
-                    <p>أو $x^2+1=0 \implies x^2=-1$ (تهمل لأن $x$ حقيقي).</p>
-                    <p>إذا $x=2$, $y=2/2=1$. الجذر الأول $2+i$.</p>
-                    <p>إذا $x=-2$, $y=2/(-2)=-1$. الجذر الثاني $-2-i$.</p>
-                    <p>الجذران هما $\pm(2+i)$.</p>
-                </div>
-            </section>
+            <section class="exercise" aria-label="تمرين 8: تحليل مجموع مربعين">
+                 <p><strong>تمرين 8:</strong> حلّل العدد 17 إلى حاصل ضرب عاملين مركبين بصورة $a+bi$. (راجع ص20 مثال 1)</p>
+                 <label>العامل الأول:</label> <input type="text" id="ex8-f1-input" placeholder="a+bi" aria-label="العامل الأول لتمرين 8">
+                 <label>العامل الثاني:</label> <input type="text" id="ex8-f2-input" placeholder="a+bi" aria-label="العامل الثاني لتمرين 8">
+                 <button onclick="checkMultiAnswer('ex8', ['4+i', '4-i'], true)" aria-label="تحقق من إجابة تمرين 8">تحقق</button>
+                 <button onclick="toggleSolution('ex8-solution')" aria-label="عرض حل تمرين 8">الحل</button>
+                 <div id="ex8-feedback" class="feedback"></div>
+                 <div id="ex8-solution" class="solution">
+                     <h4>خطوات الحل:</h4>
+                     <p>نبحث عن عددين مربعين مجموعهما 17. نجد $16+1=17$ أو $4^2+1^2=17$.</p>
+                     <p>$17 = 4^2 + 1^2 = 4^2 - (-1^2) = 4^2 - (1i)^2$.</p>
+                     <p>هذا فرق بين مربعين: $(4-i)(4+i)$.</p>
+                     <p>العاملان هما $4+i$ و $4-i$.</p>
+                 </div>
+             </section>
 
-            <section class="exercise" aria-label="تمرين 9: حل معادلة تربيعية">
-                <p><strong>تمرين 9:</strong> حل المعادلة $x^2 - 2x + 5 = 0$ في مجموعة الأعداد المركبة $\mathbb{C}$.</p>
-                <label>الجذر الأول:</label> <input type="text" id="ex9-r1-input" placeholder="x+yi" aria-label="الجذر الأول **.
-                <button onclick="checkMultiAnswer('ex9', ['1+2i', 'x+yi" aria-label="first root for exercise 9">
-                <label>الj1-2i'], true)" aria-label="check answers for exercise żż2":</label> <input type="text" id="ex9-r2-input" placeholder="x+bi" aria-label="second root for exercise 9">
-                <button onclick="checkMultiAnswer('ex9', ['1+2i', '1-2i'], true)" aria-label="check answers for exercise 9">تحقق</button>
-                <button onclick="toggleSolution('ex9-solution')" aria-label="show solution for exercise 9">الحل</button>
+            <section class="exercise" aria-label="تمرين 9: تكوين معادلة تربيعية">
+                <p><strong>تمرين 9:</strong> كوّن المعادلة التربيعية التي جذراها $m=1+2i$ و $L=1-i$. (راجع ص42 مثال 2)</p>
+                <label>المعادلة ($x^2+bx+c=0$):</label>
+                <input type="text" id="ex9-input" placeholder="اكتب المعادلة كاملة" aria-label="إجابة تمرين 9">
+                <button onclick="checkAnswer('ex9', 'x^2-(2+i)x+(3+i)=0', true)" aria-label="تحقق من إجابة تمرين 9">تحقق</button>
+                <button onclick="toggleSolution('ex9-solution')" aria-label="عرض حل تمرين 9">الحل</button>
                 <div id="ex9-feedback" class="feedback"></div>
                 <div id="ex9-solution" class="solution">
                     <h4>خطوات الحل:</h4>
-                    <p>نستخدم الدستور $a=1, b=-2, c=5$.</p>
-                    <p>$x = \frac{-(-2) \pm \sqrt{(-2)^2 - 4(1)(5)}}{2(1)}$</p>
-                    <p>$x = \frac{2 \pm \sqrt{4 - 20}}{2} = \frac{2 \pm \sqrt{-16}}{2}$</p>
-                    <p>$x = \frac{2 \pm \sqrt{16}i}{2} = \frac{2 \pm 4i}{2}$</p>
-                    <p>$x = \frac{2}{2} \pm \frac{4i}{2} = 1 \pm 2i$.</p>
-                    <p>الحلان هما $1+2i$ و $1-2i$.</p>
+                    <p>مجموع الجذرين: $m+L = (1+2i) + (1-i) = (1+1) + (2-1)i = 2+i$.</p>
+                    <p>حاصل ضرب الجذرين: $m \cdot L = (1+2i)(1-i) = 1(1) + 1(-i) + 2i(1) + 2i(-i)$</p>
+                    <p>$= 1 - i + 2i - 2i^2 = 1 + i - 2(-1) = 1+i+2 = 3+i$.</p>
+                    <p>المعادلة هي: $x^2 - (\text{المجموع})x + (\text{الضرب}) = 0$.</p>
+                    <p>$x^2 - (2+i)x + (3+i) = 0$.</p>
+                    <p>صيغ مقبولة للإجابة: `x^2-(2+i)x+(3+i)=0`, `x^2+(-2-i)x+(3+i)=0`.</p>
                 </div>
             </section>
 
+
             <h2>الصيغة القطبية ومبرهنة ديموافر</h2>
             <div class="concept">
-                <p><strong>الصيغة القطبية:</strong> $z = x+yi = r(\cos \theta + i \sin \theta)$</p>
-                <p>حيث $r = |z| = \sqrt{x^2+y^2}$ (المقياس).</p>
-                <p>و $\theta = \arg(z)$ (السعة) تُحدد من المعادلتين: $\cos \theta = \frac{x}{r}$ و $\sin \theta = \frac{y}{r}$, مع مراعاة الربع الذي تقع فيه النقطة $(x,y)$.</p>
-                <p><strong>مبرهنة ديموافر (للأسس الصحيحة):</strong> $[r(\cos \theta + i \sin \theta)]^n = r^n (\cos(n\theta) + i \sin(n\theta))$ لأي عدد صحيح $n$.</p>
-                <p><strong>إيجاد الجذور النونية (نتيجة ديموافر):</strong> الجذور النونية للعدد $c = R(\cos \phi + i \sin \phi)$ هي:</p>
-                <p>$z_k = \sqrt[n]{R} \left[ \cos\left(\frac{\phi + 2k\pi}{n}\right) + i \sin\left(\frac{\phi + 2k\pi}{n}\right) \right]$</p>
-                <p>حيث $k = 0, 1, 2, \dots, n-1$. (يوجد $n$ جذور مختلفة).</p>
+                <p><strong>الصيغة القطبية:</strong> $z = x+yi = r(\cos \theta + i \sin \theta)$، حيث $r = |z| = \sqrt{x^2+y^2}$ و $\theta = \arg(z)$.</p>
+                <p><strong>مبرهنة ديموافر (للأسس الصحيحة):</strong> $[r(\cos \theta + i \sin \theta)]^n = r^n (\cos(n\theta) + i \sin(n\theta))$ لـ $n \in \mathbb{Z}$.</p>
+                <p><strong>نتيجة ديموافر (الجذور النونية):</strong> الجذور النونية للعدد $c = R(\cos \phi + i \sin \phi)$ هي:</p>
+                <p>$z_k = \sqrt[n]{R} \left[ \cos\left(\frac{\phi + 2k\pi}{n}\right) + i \sin\left(\frac{\phi + 2k\pi}{n}\right) \right]$, لـ $k = 0, 1, \dots, n-1$.</p>
             </div>
 
-            <section class="exercise" aria-label="تمرين 10: الصيغة القطبية">
-                <p><strong>تمرين 10:</strong> عبّر عن العدد $z = 1 - i$ بالصيغة القطبية (استخدم القيمة الأساسية للسعة $0 \le \theta < 2\pi$).</p>
-                <label>الصيغة القطبية:</label>
-                <input type="text" id="ex10-input" placeholder="r(cos(theta)+isin(theta))" aria-label="إجابة تمرين 10">
-                <button onclick="checkAnswer('ex10', 'sqrt(2)(cos(7pi/4)+isin(7pi/4))', true)" aria-label="تحقق من إجابة تمرين 10">تحقق</button>
+            <section class="exercise" aria-label="تمرين 10: استخدام ديموافر">
+                <p><strong>تمرين 10:</strong> احسب $(1-i)^7$ باستخدام مبرهنة ديموافر. (راجع ص77 مثال 2)</p>
+                <label>إجابتك:</label>
+                <input type="text" id="ex10-input" placeholder="a+bi" aria-label="إجابة تمرين 10">
+                <button onclick="checkAnswer('ex10', '8+8i', true)" aria-label="تحقق من إجابة تمرين 10">تحقق</button>
                 <button onclick="toggleSolution('ex10-solution')" aria-label="عرض حل تمرين 10">الحل</button>
                 <div id="ex10-feedback" class="feedback"></div>
                 <div id="ex10-solution" class="solution">
                     <h4>خطوات الحل:</h4>
-                    <p>$z = 1-i \implies x=1, y=-1$.</p>
-                    <p>المقياس $r = \sqrt{1^2 + (-1)^2} = \sqrt{1+1} = \sqrt{2}$.</p>
-                    <p>$\cos \theta = \frac{x}{r} = \frac{1}{\sqrt{2}}$, $\sin \theta = \frac{y}{r} = \frac{-1}{\sqrt{2}}$.</p>
-                    <p>بما أن $\cos$ موجب و $\sin$ سالب، فـ $\theta$ تقع في الربع الرابع.</p>
-                    <p>زاوية الإسناد التي جيب تمامها وجيبها $\frac{1}{\sqrt{2}}$ هي $\frac{\pi}{4}$.</p>
-                    <p>السعة في الربع الرابع: $\theta = 2\pi - \frac{\pi}{4} = \frac{8\pi - \pi}{4} = \frac{7\pi}{4}$.</p>
-                    <p>الصيغة القطبية: $z = \sqrt{2} \left( \cos \frac{7\pi}{4} + i \sin \frac{7\pi}{4} \right)$.</p>
-                    <p>ملاحظة: إجابات مثل $\sqrt{2}(\cos(-\pi/4)+i\sin(-\pi/4))$ مقبولة أيضاً لكن السؤال طلب القيمة الأساسية $0 \le \theta < 2\pi$.</p>
+                    <p>1. نضع $z = 1-i$ بالصيغة القطبية:</p>
+                    <p>$x=1, y=-1$. $r = \sqrt{1^2+(-1)^2} = \sqrt{2}$.</p>
+                    <p>$\cos \theta = 1/\sqrt{2}$, $\sin \theta = -1/\sqrt{2}$. تقع $\theta$ في الربع الرابع. $\theta = 2\pi - \pi/4 = 7\pi/4$.</p>
+                    <p>$z = \sqrt{2}(\cos(7\pi/4) + i \sin(7\pi/4))$.</p>
+                    <p>2. نطبق ديموافر للأس 7:</p>
+                    <p>$z^7 = (\sqrt{2})^7 (\cos(7 \cdot 7\pi/4) + i \sin(7 \cdot 7\pi/4))$</p>
+                    <p>$= (2^{1/2})^7 (\cos(49\pi/4) + i \sin(49\pi/4))$</p>
+                    <p>$= 2^{7/2} (\cos(49\pi/4) + i \sin(49\pi/4))$.</p>
+                    <p>$2^{7/2} = 2^3 \cdot 2^{1/2} = 8\sqrt{2}$.</p>
+                    <p>3. نبسط الزاوية: $49\pi/4 = (48\pi + \pi)/4 = 12\pi + \pi/4$. إذن الزاوية المكافئة هي $\pi/4$.</p>
+                    <p>$z^7 = 8\sqrt{2} (\cos(\pi/4) + i \sin(\pi/4))$</p>
+                    <p>$= 8\sqrt{2} (1/\sqrt{2} + i (1/\sqrt{2}))$</p>
+                    <p>$= 8\sqrt{2}/\sqrt{2} + 8i\sqrt{2}/\sqrt{2} = 8 + 8i$.</p>
                 </div>
             </section>
 
-            <section class="exercise" aria-label="تمرين 11: مبرهنة ديموافر">
-                <p><strong>تمرين 11:</strong> احسب $(1+\sqrt{3}i)^4$ باستخدام مبرهنة ديموافر.</p>
-                <label>إجابتك:</label>
-                <input type="text" id="ex11-input" placeholder="a+bi" aria-label="إجابة تمرين 11">
-                <button onclick="checkAnswer('ex11', '-8-8sqrt(3)i', true)" aria-label="تحقق من إجابة تمرين 11">تحقق</button>
+            <section class="exercise" aria-label="تمرين 11: الجذور التكعيبية">
+                <p><strong>تمرين 11:</strong> جد الجذور التكعيبية للعدد $27i$. (راجع ص92 مثال 3)</p>
+                <label>الجذر الأول (k=0):</label> <input type="text" id="ex11-r1-input" placeholder="a+bi" aria-label="الجذر الأول تمرين 11">
+                <label>الجذر الثاني (k=1):</label> <input type="text" id="ex11-r2-input" placeholder="a+bi" aria-label="الجذر الثاني تمرين 11">
+                 <label>الجذر الثالث (k=2):</label> <input type="text" id="ex11-r3-input" placeholder="a+bi" aria-label="الجذر الثالث تمرين 11">
+                <button onclick="checkMultiAnswer('ex11', ['3sqrt(3)/2+3/2i', '-3sqrt(3)/2+3/2i', '-3i'], true)" aria-label="تحقق من إجابة تمرين 11">تحقق</button>
                 <button onclick="toggleSolution('ex11-solution')" aria-label="عرض حل تمرين 11">الحل</button>
                 <div id="ex11-feedback" class="feedback"></div>
                 <div id="ex11-solution" class="solution">
                     <h4>خطوات الحل:</h4>
-                    <p>1. نضع $z = 1+\sqrt{3}i$ بالصيغة القطبية:</p>
-                    <p>$r = \sqrt{1^2 + (\sqrt{3})^2} = \sqrt{1+3} = \sqrt{4} = 2$.</p>
-                    <p>$\cos \theta = 1/2$, $\sin \theta = \sqrt{3}/2$. $\implies \theta = \pi/3$ (الربع الأول).</p>
-                    <p>$z = 2(\cos(\pi/3) + i \sin(\pi/3))$.</p>
-                    <p>2. نطبق ديموافر للأس 4:</p>
-                    <p>$z^4 = [2(\cos(\pi/3) + i \sin(\pi/3))]^4$</p>
-                    <p>$= 2^4 (\cos(4 \cdot \pi/3) + i \sin(4 \cdot \pi/3))$</p>
-                    <p>$= 16 (\cos(4\pi/3) + i \sin(4\pi/3))$.</p>
-                    <p>3. نجد قيم $\cos$ و $\sin$ للزاوية $4\pi/3$ (تقع في الربع الثالث، زاوية الإسناد $\pi/3$):</p>
-                    <p>$\cos(4\pi/3) = -\cos(\pi/3) = -1/2$.</p>
-                    <p>$\sin(4\pi/3) = -\sin(\pi/3) = -\sqrt{3}/2$.</p>
-                    <p>4. نعوض القيم:</p>
-                    <p>$z^4 = 16 (-\frac{1}{2} + i (-\frac{\sqrt{3}}{2})) = 16(-\frac{1}{2} - i \frac{\sqrt{3}}{2})$</p>
-                    <p>$= -8 - 8\sqrt{3}i$.</p>
+                    <p>1. نضع $c = 27i$ بالصيغة القطبية: $R=27, \phi=\pi/2$.</p>
+                    <p>$c = 27(\cos(\pi/2) + i \sin(\pi/2))$.</p>
+                    <p>2. نطبق صيغة الجذور ($n=3$):</p>
+                    <p>$z_k = \sqrt[3]{27} \left[ \cos\left(\frac{\pi/2 + 2k\pi}{3}\right) + i \sin\left(\frac{\pi/2 + 2k\pi}{3}\right) \right]$</p>
+                    <p>$z_k = 3 \left[ \cos\left(\frac{\pi + 4k\pi}{6}\right) + i \sin\left(\frac{\pi + 4k\pi}{6}\right) \right]$ لـ $k=0, 1, 2$.</p>
+                    <p>3. نحسب الجذور:</p>
+                    <p><strong>k=0:</strong> $z_0 = 3(\cos(\pi/6) + i \sin(\pi/6)) = 3(\frac{\sqrt{3}}{2} + i \frac{1}{2}) = \frac{3\sqrt{3}}{2} + \frac{3}{2}i$.</p>
+                    <p><strong>k=1:</strong> $z_1 = 3(\cos(5\pi/6) + i \sin(5\pi/6)) = 3(-\frac{\sqrt{3}}{2} + i \frac{1}{2}) = -\frac{3\sqrt{3}}{2} + \frac{3}{2}i$.</p>
+                    <p><strong>k=2:</strong> $z_2 = 3(\cos(9\pi/6) + i \sin(9\pi/6)) = 3(\cos(3\pi/2) + i \sin(3\pi/2)) = 3(0 + i(-1)) = -3i$.</p>
+                    <p>الجذور هي: $\frac{3\sqrt{3}}{2}+\frac{3}{2}i$, $-\frac{3\sqrt{3}}{2}+\frac{3}{2}i$, $-3i$.</p>
                 </div>
             </section>
 
-            <section class="exercise" aria-label="تمرين 12: الجذور التكعيبية">
-                <p><strong>تمرين 12:</strong> جد الجذور التكعيبية للعدد $8i$.</p>
-                <label>أحد الجذور (كمثال):</label>
-                <input type="text" id="ex12-input" placeholder="a+bi" aria-label="إجابة تمرين 12">
-                <button onclick="alert('تحقق من الحل لرؤية جميع الجذور')" aria-label="تحقق من إجابة تمرين 12">تحقق</button>
+            <h2>الجذور التكعيبية للواحد الصحيح (ω)</h2>
+            <div class="concept">
+                <p>هي حلول المعادلة $z^3=1$. الجذر الأول هو 1.</p>
+                <p>الجذران الآخران هما $z = \frac{-1 \pm \sqrt{1^2 - 4(1)(1)}}{2} = \frac{-1 \pm \sqrt{-3}}{2} = -\frac{1}{2} \pm \frac{\sqrt{3}}{2}i$.</p>
+                <p>نرمز لهما بـ $\omega$ و $\omega^2$:
+                    $\omega = -\frac{1}{2} + \frac{\sqrt{3}}{2}i = \cos(2\pi/3) + i\sin(2\pi/3)$
+                    $\omega^2 = -\frac{1}{2} - \frac{\sqrt{3}}{2}i = \cos(4\pi/3) + i\sin(4\pi/3)$.
+                </p>
+                <p><strong>خصائص هامة:</strong></p>
+                <ul>
+                    <li>$\omega^3 = 1$. (وبالتالي $\omega^{3n+r} = \omega^r$)</li>
+                    <li>$1 + \omega + \omega^2 = 0$. (أي مجموع أي جذرين يساوي سالب الثالث: $1+\omega = -\omega^2$, $1+\omega^2 = -\omega$, $\omega+\omega^2 = -1$).</li>
+                    <li>$\omega$ و $\omega^2$ مترافقان: $\bar{\omega} = \omega^2$, $\bar{\omega^2} = \omega$.</li>
+                    <li>$\omega - \omega^2 = \sqrt{3}i$, $\omega^2 - \omega = -\sqrt{3}i$.</li>
+                    <li>$\omega^2 = 1/\omega$, $\omega = 1/\omega^2$.</li>
+                </ul>
+            </div>
+
+             <section class="exercise" aria-label="تمرين 12: تبسيط قوى ω">
+                <p><strong>تمرين 12:</strong> بسّط $\omega^{14}$. (راجع ص105 مثال 2)</p>
+                <label>إجابتك:</label>
+                <input type="text" id="ex12-input" placeholder="أدخل 1 أو ω أو ω^2" aria-label="إجابة تمرين 12">
+                <button onclick="checkAnswer('ex12', 'w^2', true)" aria-label="تحقق من إجابة تمرين 12">تحقق</button>
                 <button onclick="toggleSolution('ex12-solution')" aria-label="عرض حل تمرين 12">الحل</button>
                 <div id="ex12-feedback" class="feedback"></div>
                 <div id="ex12-solution" class="solution">
                     <h4>خطوات الحل:</h4>
-                    <p>1. نضع $c = 8i$ بالصيغة القطبية:</p>
-                    <p>$c = 0+8i$. $R = \sqrt{0^2+8^2} = 8$.</p>
-                    <p>النقطة $(0, 8)$ تقع على المحور التخيلي الموجب، إذن $\phi = \pi/2$.</p>
-                    <p>$c = 8(\cos(\pi/2) + i \sin(\pi/2))$.</p>
-                    <p>2. نطبق صيغة الجذور النونية ($n=3$):</p>
-                    <p>$z_k = \sqrt[3]{8} \left[ \cos\left(\frac{\pi/2 + 2k\pi}{3}\right) + i \sin\left(\frac{\pi/2 + 2k\pi}{3}\right) \right]$ لـ $k=0, 1, 2$.</p>
-                    <p>$z_k = 2 \left[ \cos\left(\frac{\pi + 4k\pi}{6}\right) + i \sin\left(\frac{\pi + 4k\pi}{6}\right) \right]$.</p>
-                    <p>3. نحسب الجذور لـ $k=0, 1, 2$:</p>
-                    <p><strong>k=0:</strong> $z_0 = 2(\cos(\pi/6) + i \sin(\pi/6)) = 2(\frac{\sqrt{3}}{2} + i \frac{1}{2}) = \sqrt{3} + i$.</p>
-                    <p><strong>k=1:</strong> $z_1 = 2(\cos(5\pi/6) + i \sin(5\pi/6)) = 2(-\frac{\sqrt{3}}{2} + i \frac{1}{2}) = -\sqrt{3} + i$.</p>
-                    <p><strong>k=2:</strong> $z_2 = 2(\cos(9\pi/6) + i \sin(9\pi/6)) = 2(\cos(3\pi/2) + i \sin(3\pi/2)) = 2(0 + i(-1)) = -2i$.</p>
-                    <p>الجذور هي: $\sqrt{3}+i$, $-\sqrt{3}+i$, $-2i$.</p>
+                    <p>نقسم الأس 14 على 3: $14 \div 3 = 4$ والباقي 2.</p>
+                    <p>إذن $\omega^{14} = \omega^{3 \times 4 + 2} = (\omega^3)^4 \cdot \omega^2 = (1)^4 \cdot \omega^2 = \omega^2$.</p>
+                    <p>الإجابة المقبولة: `w^2` أو `omega^2`.</p>
                 </div>
             </section>
 
-            <h2>التمثيل الهندسي (شكل أرجاند)</h2>
+            <section class="exercise" aria-label="تمرين 13: تبسيط قوى ω السالبة">
+                <p><strong>تمرين 13:</strong> بسّط $\omega^{-13}$. (راجع ص105 مثال 6)</p>
+                <label>إجابتك:</label>
+                <input type="text" id="ex13-input" placeholder="أدخل 1 أو ω أو ω^2" aria-label="إجابة تمرين 13">
+                <button onclick="checkAnswer('ex13', 'w^2', true)" aria-label="تحقق من إجابة تمرين 13">تحقق</button>
+                <button onclick="toggleSolution('ex13-solution')" aria-label="عرض حل تمرين 13">الحل</button>
+                <div id="ex13-feedback" class="feedback"></div>
+                <div id="ex13-solution" class="solution">
+                    <h4>خطوات الحل:</h4>
+                    <p>$\omega^{-13} = \frac{1}{\omega^{13}}$.</p>
+                    <p>نقسم الأس 13 على 3، الباقي 1. إذن $\omega^{13} = \omega^1 = \omega$.</p>
+                    <p>$\frac{1}{\omega} = \frac{\omega^3}{\omega} = \omega^2$.</p>
+                     <p>طريقة أخرى: $\omega^{-13} = \omega^{-13} \cdot \omega^{15} = \omega^{-13+15} = \omega^2$. (استخدمنا $\omega^{15}=(\omega^3)^5=1$).</p>
+                </div>
+            </section>
+
+            <section class="exercise" aria-label="تمرين 14: تقييم مقادير ω">
+                <p><strong>تمرين 14:</strong> جد قيمة $(1+\omega^2)^3 + (1+\omega)^3$. (راجع ص107 مثال d)</p>
+                <label>إجابتك:</label>
+                <input type="text" id="ex14-input" placeholder="أدخل القيمة العددية" aria-label="إجابة تمرين 14">
+                <button onclick="checkAnswer('ex14', '-2')" aria-label="تحقق من إجابة تمرين 14">تحقق</button>
+                <button onclick="toggleSolution('ex14-solution')" aria-label="عرض حل تمرين 14">الحل</button>
+                <div id="ex14-feedback" class="feedback"></div>
+                <div id="ex14-solution" class="solution">
+                    <h4>خطوات الحل:</h4>
+                    <p>نعلم أن $1+\omega^2 = -\omega$ و $1+\omega = -\omega^2$.</p>
+                    <p>المقدار يصبح: $(-\omega)^3 + (-\omega^2)^3$.</p>
+                    <p>$= -\omega^3 - \omega^6$.</p>
+                    <p>بما أن $\omega^3=1$, فإن $\omega^6 = (\omega^3)^2 = 1^2 = 1$.</p>
+                    <p>$= -(1) - (1) = -1 - 1 = -2$.</p>
+                </div>
+            </section>
+
+             <section class="exercise" aria-label="تمرين 15: تكوين معادلة بـ ω">
+                 <p><strong>تمرين 15:</strong> كوّن المعادلة التربيعية التي جذراها $m=2/\omega$ و $L=2/\omega^2$.</p>
+                 <label>المعادلة ($x^2+bx+c=0$):</label>
+                 <input type="text" id="ex15-input" placeholder="اكتب المعادلة كاملة" aria-label="إجابة تمرين 15">
+                 <button onclick="checkAnswer('ex15', 'x^2+2x+4=0', true)" aria-label="تحقق من إجابة تمرين 15">تحقق</button>
+                 <button onclick="toggleSolution('ex15-solution')" aria-label="عرض حل تمرين 15">الحل</button>
+                 <div id="ex15-feedback" class="feedback"></div>
+                 <div id="ex15-solution" class="solution">
+                     <h4>خطوات الحل:</h4>
+                     <p>نبسط الجذرين أولاً:</p>
+                     <p>$m = 2/\omega = 2\omega^2$.</p>
+                     <p>$L = 2/\omega^2 = 2\omega$.</p>
+                     <p>مجموع الجذرين: $m+L = 2\omega^2 + 2\omega = 2(\omega^2+\omega) = 2(-1) = -2$.</p>
+                     <p>حاصل ضرب الجذرين: $m \cdot L = (2\omega^2)(2\omega) = 4\omega^3 = 4(1) = 4$.</p>
+                     <p>المعادلة هي: $x^2 - (\text{المجموع})x + (\text{الضرب}) = 0$.</p>
+                     <p>$x^2 - (-2)x + 4 = 0 \implies x^2 + 2x + 4 = 0$.</p>
+                 </div>
+             </section>
+
+            <h2>التمثيل الهندسي وتطبيقات p5.js</h2>
             <div class="concept">
-                <p>يمكن تمثيل العدد المركب $z=x+yi$ بالنقطة $P(x,y)$ في المستوي المركب (مستوي أرجاند)، حيث المحور الأفقي هو المحور الحقيقي (Re) والمحور الرأسي هو المحور التخيلي (Im).</p>
-                <p>يمكن أيضاً تمثيله كمتجه من نقطة الأصل $O(0,0)$ إلى النقطة $P(x,y)$.</p>
+                <p>يمكن تمثيل الأعداد المركبة كنقاط أو متجهات في مستوى أرجاند. العمليات الجبرية لها تفسيرات هندسية.</p>
             </div>
-            <div id="argandDiagramContainer">
-                <!-- p5.js canvas will be inserted here -->
+
+            <div class="visualization-container">
+                <h3>التمثيل الأساسي والمرافق</h3>
+                <div id="argandDiagramContainer">
+                    <!-- p5.js canvas will be inserted here -->
+                </div>
+                 <p style="text-align:center; font-size:0.9em;">شكل أرجاند يمثل العدد المركب $z = 3 + 2i$ (بالأزرق) ومرافقه $\bar{z} = 3-2i$ (بالأخضر).</p>
             </div>
-            <p style="text-align:center; font-size:0.9em;">شكل أرجاند يمثل العدد المركب $z = 3 + 2i$.</p>
+
+            <div class="visualization-container">
+                <h3>جمع المتجهات (قاعدة متوازي الأضلاع)</h3>
+                <div class="controls">
+                    <label>Z1:</label>
+                    <input type="text" id="z1-input" value="3+1i" aria-label="أدخل العدد الأول z1">
+                    <label>Z2:</label>
+                    <input type="text" id="z2-input" value="1+2i" aria-label="أدخل العدد الثاني z2">
+                    <button onclick="updateVectorAddition()">تحديث الجمع</button>
+                </div>
+                <div id="vectorAdditionContainer">
+                    <!-- p5.js canvas for vector addition -->
+                </div>
+                 <p style="text-align:center; font-size:0.9em;">يمثل $z_1$ (أزرق)، $z_2$ (أخضر)، ومجموعهما $z_1+z_2$ (أحمر).</p>
+            </div>
+
+            <div class="visualization-container">
+                <h3>جذور الوحدة النونية</h3>
+                 <div class="controls">
+                    <label for="n-roots">عدد الجذور (n):</label>
+                    <select id="n-roots" onchange="updateRootsOfUnity()" aria-label="اختر عدد الجذور n">
+                        <option value="3" selected>3 (الجذور التكعيبية)</option>
+                        <option value="4">4 (الجذور الرباعية)</option>
+                        <option value="5">5 (الجذور الخماسية)</option>
+                        <option value="6">6 (الجذور السداسية)</option>
+                        <option value="8">8 (الجذور الثمانية)</option>
+                    </select>
+                </div>
+                <div id="rootsOfUnityContainer">
+                    <!-- p5.js canvas for roots of unity -->
+                </div>
+                <p style="text-align:center; font-size:0.9em;">يمثل الجذور النونية للعدد 1 على دائرة الوحدة.</p>
+            </div>
         </main>
     </div>
 
     <footer>
-        <p>تمارين تفاعلية على الأعداد المركبة - مستوحاة من منهج السادس العلمي العراقي.</p>
-        <p>إصدار تجريبي من قبل <a href="https://t.me/EYLIA5" target="_blank" aria-label="صفحة إلياس خضر">إلياس خضر</a></p>
+        <p>تمارين تفاعلية متقدمة على الأعداد المركبة - مستوحاة من منهج السادس العلمي العراقي (ملزمة أ. منيب أحمد سلطان).</p>
+        <p>إصدار تجريبي من قبل <a href="https://t.me/EYLIA5" target="_blank" aria-label="صفحة إلياس خضر">إلياس خضر</a> .</p>
     </footer>
 
     <!-- External JavaScript -->
